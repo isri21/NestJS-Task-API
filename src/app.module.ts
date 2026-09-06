@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module.js';
+import { CacheModule } from '@nestjs/cache-manager';
+import { CachesModule } from './caches/caches.module.js';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -12,7 +14,13 @@ import { TaskModule } from './task/task.module.js';
     database: 'postgres',
     autoLoadEntities: true,
     synchronize: true, // dev only, never in production
-  }),TaskModule],
+  }),
+  TaskModule,
+  CacheModule.register({
+    isGlobal: true
+  }),
+  CachesModule,
+  ],
   controllers: [],
   providers: [],
 })
