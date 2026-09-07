@@ -24,22 +24,15 @@ POSTGRES_PASSWORD=
 DB_PORT=
 REDIS_PORT=
 ```
-or just create a `.env` file in the directory and paste in the following defaults
+or copy the command below 
 ```bash
-vi .env
+echo -e "DB_HOST=localhost\nDB_PORT=5432\nDB_USERNAME=postgres\nDB_PASSWORD=root\nDB_NAME=postgres\nREDIS_PORT=6379\nREDIS_HOST=localhost" > .env
 ```
-```bash
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=root
-DB_NAME=postgres
-REDIS_PORT=6379
-REDIS_HOST=localhost
-```
+This command creates a `.env` file in the directory and assigns some default values to get started.
+
 4. Start up Docker 
 ```bash
-docker compose up
+docker compose up -d
 ```
 5. Start Dev Server
 ```bash
