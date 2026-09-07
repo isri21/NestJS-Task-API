@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto.js';
 import { UpdateTaskDto } from './dto/update-task.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +11,8 @@ import type { Cache } from 'cache-manager';
 @Injectable()
 export class TaskService {
 
+  private readonly logger = new Logger(TaskService.name);
+
   constructor(
     @InjectRepository(Task) private taskRepo: Repository<Task>, 
     @Inject(CACHE_MANAGER) private cacheManager: Cache
@@ -18,30 +20,37 @@ export class TaskService {
 
   create(createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepo.create(createTaskDto)
+    this.logger.log(`Creating a New Task => (${task.name})`)
     this.invalidateTasks(this.cacheManager)
     return this.taskRepo.save(task)
   }
 
   findAll(): Promise<Task[]> {
+    this.logger.log("Fetching All Tasks from DB")
     return this.taskRepo.find();
   }
 
   async update(id: string) {
     const task = await this.taskRepo.findOneBy({id: id});
+    this.logger.log(`Getting Task with ID ${id}`)
     if (!task)
-      return "Not Found!"
+      return this.logger.error(`Task with ID ${id} doesn't exist!`)
+    
     task.status = "Completed"
+    this.logger.log(`Marked Task: ${id} as Completed`)
     this.invalidateTasks(this.cacheManager)
     return this.taskRepo.save(task)
   }
 
   remove(id: string) {
+    this.logger.log(`Deleting Taks ${id}`)
+    this.taskRepo.delete(id)
     this.invalidateTasks(this.cacheManager)
-    return this.taskRepo.delete(id)
   }
 
   // Invalidates Cached Tasks
   private invalidateTasks(cacheManager: Cache): void {
     cacheManager.del("allTasks")
+    this.logger.log(`Invalidating List Tasks Cache`)
   }
 }
