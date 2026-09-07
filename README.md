@@ -15,8 +15,12 @@ git clone https://github.com/isri21/NestJS-Task-API.git
 ```bash
 cd NestJS-Task-API/
 ```
+1. Install dependencies
+```bash
+pnpm i
+```
 
-3. Setup the following Environment Variables
+4. Setup the following Environment Variables
 ```.env
 POSTGRES_DB=
 POSTGRES_USER=
