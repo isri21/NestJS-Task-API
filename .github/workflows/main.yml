@@ -1,0 +1,37 @@
+name: Check Lint & Test on Every Push to Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint_and_test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+       
+      - name: Install nodeJS
+        uses: actions/setup-node@v6.5.0
+
+      - name: Install Dependecies
+        run: pnpm install
+
+      - name: Run Lint
+        run: pnpm lint
+
+      - name: Run Test
+        run: pnpm test
+
+
+
+
+
+
+
+          
