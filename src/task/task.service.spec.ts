@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TaskService } from './task.service.js';
-import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity.js';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateTaskDto } from './dto/create-task.dto.js';
@@ -8,7 +7,6 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('TaskService', () => {
   let service: TaskService;
-  let taskRepo: Repository<Task>;
 
   const mockTaskRepo = {
     find: vi.fn(),
@@ -32,7 +30,6 @@ describe('TaskService', () => {
     }).compile();
 
     service = module.get<TaskService>(TaskService);
-    taskRepo = module.get(getRepositoryToken(Task))
   });
 
   afterEach(() => {
@@ -58,7 +55,7 @@ describe('TaskService', () => {
 
   describe("Test findAll()", () => {
     it("Should Call The Repositories findAll method", async () => {
-      const allTasks = await service.findAll()
+      await service.findAll()
       expect(mockTaskRepo.find).toHaveBeenCalled()
     })
   })
