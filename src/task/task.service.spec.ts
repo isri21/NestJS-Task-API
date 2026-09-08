@@ -48,7 +48,7 @@ describe('TaskService', () => {
       const savedTask = await service.create(taskDto);
 
       expect(savedTask).toEqual(newTask);
-      expect(mockTaskRepo.save).toHaveBeenCalledWith(newTask);
+      expect(mockTaskRepo.save).toHaveBeenCalledWith("newTask");
       expect(mockCacheManager.del).toHaveBeenCalled();
     })
   })
