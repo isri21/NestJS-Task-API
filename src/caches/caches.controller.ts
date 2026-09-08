@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CachesService } from './caches.service.js';
+import { UpdateCachDto } from './dto/update-cach.dto.js';
 import { CreateCachDto } from './dto/create-cach.dto.js';
 
 @Controller('caches')
