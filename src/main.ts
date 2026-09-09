@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { GlobalExceptionFilter } from './common/filters/GlobalExceptionFilter.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,6 +9,7 @@ async function bootstrap() {
     origin: ["http://localhost:3001"]
   })  
 
+  app.useGlobalFilters(new GlobalExceptionFilter())
   const config = new DocumentBuilder()
     .setTitle('Simple Task API')
     .setDescription("A task tracker. A user can create a task, list tasks, \
