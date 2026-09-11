@@ -1,6 +1,6 @@
-import { IsEmail, Min } from 'class-validator'
+import { MinLength } from 'class-validator'
 export class CreateTaskDto {    
-    @Min(5)
+    @MinLength(5)
     name: string
     status: string
 }
