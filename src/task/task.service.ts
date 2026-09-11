@@ -1,10 +1,11 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './entities/task.entity.js';
 import { Repository } from 'typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
+import { Error_Codes } from '../common/enums/ErrorCodes.js';
 
 @Injectable()
 export class TaskService {
@@ -30,7 +31,10 @@ export class TaskService {
 	async update(id: string) {
 		const task = await this.taskRepo.findOneBy({ id: id });
 		this.logger.log(`Getting Task with ID ${id}`);
-		if (!task) return this.logger.error(`Task with ID ${id} doesn't exist!`);
+		if (!task)  {
+			this.logger.error(`Task with id: ${id} doesn't exist!`)
+			throw new NotFoundException({code: Error_Codes.NOT_FOUND, message: `Task Doesn't Exist`});
+		}
 
 		task.status = 'Completed';
 		this.logger.log(`Marked Task: ${id} as Completed`);
