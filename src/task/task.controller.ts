@@ -35,8 +35,8 @@ export class TaskController {
 	}
 
 	@Patch(':id/done')
-	async update(@Param('id') id: string) {
-		const data = await this.taskService.update(id);
+	async mark(@Param('id') id: string) {
+		const data = await this.taskService.mark(id);
 		return apiResponse(data);
 	}
 
