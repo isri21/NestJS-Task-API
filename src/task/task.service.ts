@@ -28,7 +28,7 @@ export class TaskService {
 		return this.taskRepo.find();
 	}
 
-	async update(id: string) {
+	async mark(id: string) {
 		const task = await this.taskRepo.findOneBy({ id: id });
 		this.logger.log(`Getting Task with ID ${id}`);
 		if (!task)  {
