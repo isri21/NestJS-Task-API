@@ -34,6 +34,12 @@ export class TaskController {
 		return apiResponse(data);
 	}
 
+	@Patch(':id')
+	async update(@Param('id') id: string, @Body() updateTaskDto: CreateTaskDto) {
+		const data = await this.taskService.update(id, updateTaskDto);
+		return apiResponse(data);
+	}
+	
 	@Patch(':id/done')
 	async mark(@Param('id') id: string) {
 		const data = await this.taskService.mark(id);

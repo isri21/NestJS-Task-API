@@ -28,6 +28,20 @@ export class TaskService {
 		return this.taskRepo.find();
 	}
 
+	async update(id: string, updateTaskDto: CreateTaskDto) {
+		const task = await this.taskRepo.findOneBy({ id: id });
+		this.logger.log(`Getting Task with ID ${id}`);
+		if (!task)  {
+			this.logger.error(`Task with id: ${id} doesn't exist!`)
+			throw new NotFoundException({code: Error_Codes.NOT_FOUND, message: `Task Doesn't Exist`});
+		}
+
+		task.name = updateTaskDto.name;
+		this.logger.log(`Updating Task Name: ${id} to ${task.name}`);
+		this.invalidateTasks(this.cacheManager);
+		return this.taskRepo.save(task);
+	}
+
 	async mark(id: string) {
 		const task = await this.taskRepo.findOneBy({ id: id });
 		this.logger.log(`Getting Task with ID ${id}`);
