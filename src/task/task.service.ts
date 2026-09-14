@@ -9,7 +9,7 @@ import { Error_Codes } from '../common/enums/ErrorCodes.js';
 
 @Injectable()
 export class TaskService {
-	private readonly logger = new Logger(TaskService.name);
+	private readonly logger = new Logger(TaskService.name, {timestamp: true});
 
 	constructor(
 		@InjectRepository(Task) private taskRepo: Repository<Task>,
