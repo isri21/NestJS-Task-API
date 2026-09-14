@@ -22,11 +22,13 @@ pnpm i
 
 4. Setup the following Environment Variables
 ```.env
-POSTGRES_DB=
-POSTGRES_USER=
-POSTGRES_PASSWORD=
+DB_HOST=
 DB_PORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
 REDIS_PORT=
+REDIS_HOST=
 ```
 or copy the command below 
 ```bash
