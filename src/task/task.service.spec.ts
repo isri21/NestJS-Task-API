@@ -60,18 +60,32 @@ describe('TaskService', () => {
     })
   })
 
-  describe("Test update() method", () => {
+  describe("Test mark() method", () => {
     it("Should Mark a Task that Exists as Completed", async () => {
       const oldTask = {id: "1", name: "Test Taks", status: "Todo"}
       const newTask = {id: "1", name: "Test Taks", status: "Completed"}
 
       mockTaskRepo.findOneBy.mockReturnValue(oldTask)
       mockTaskRepo.save.mockReturnValue(newTask)
-      await service.update("1")
+      await service.mark("1")
 
       expect(mockTaskRepo.findOneBy).toHaveBeenCalledWith({id: "1"})
       expect(mockTaskRepo.save).toHaveBeenCalled();
       expect(mockCacheManager.del).toHaveBeenCalled();
+    })
+  })
+
+  describe("Test update() method", () => {
+    it("Should Update an Existing Task", async () => {
+      const oldTask = {id: "1", name: "Old Task Name", status: "Todo"}
+      const updateTaskDto: CreateTaskDto = {name: "New Task Name", status: "Todo"}
+
+      mockTaskRepo.findOneBy.mockReturnValue(oldTask)
+      mockTaskRepo.save.mockReturnValue(updateTaskDto)
+      const newTask = await service.update("1", updateTaskDto)
+
+      expect(newTask.name).toBe(updateTaskDto.name)
+
     })
   })
 
