@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module.js';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CachesModule } from './caches/caches.module.js';
 import { createKeyv, Keyv } from '@keyv/redis';
 import { ConfigModule, ConfigService } from '@nestjs/config'
-
+import { LoggerMiddleware } from './common/middlewares/logger.middleware.js';
+import { TaskController } from './task/task.controller.js';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -41,4 +42,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes(TaskController)
+  }
+}
